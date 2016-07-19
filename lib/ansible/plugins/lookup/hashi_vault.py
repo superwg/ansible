@@ -50,8 +50,14 @@ class HashiVault:
         self.url = kwargs.pop('url')
         self.secret = kwargs.pop('secret')
         self.token = kwargs.pop('token')
+        try:
+            self.ssl_cert = kwargs.pop('ssl_cert').split()
+        except KeyError:
+            self.ssl_cert = None
 
-        self.client = hvac.Client(url=self.url, token=self.token)
+        self.client = hvac.Client(url=self.url,
+                                  token=self.token,
+                                  cert=(tuple(self.ssl_cert)))
 
         if self.client.is_authenticated():
             pass
